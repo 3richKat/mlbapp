@@ -23,7 +23,8 @@ First, we need to pull data.  [Fangraphs](www.Fangraphs.com) is a great resource
 ## Getting and Cleaning the data
 
 First, we set up our libraries, read in the data, and do some renaming  
-```{r, results='hide', message=FALSE}
+
+```r
 library(ggplot2)
 library(dplyr)
 library(reshape2)
@@ -48,7 +49,8 @@ data$Kpct <- as.numeric(paste(data$Kpct))/100
 
 Now, the tricky part, massaging the data in a way that allows for year over year pairs
 
-```{r, results='hide', message=FALSE}
+
+```r
 #Arrange data for Season vs Season comparions by player (also removing Team variable)
 melt.data <- melt(data[,-3], id.vars=c("playerid","Name", "Season"))
 seasons <- dcast(melt.data, playerid + Name + variable ~ Season)
@@ -72,10 +74,35 @@ names(cortable) <- c("variable", "cor")
 
 We can see that context specific statistics (R, RBI) and batted ball statistics (AVG, BABIP) are less predictive, year over year, than Plate Discipline stats (OBP, K%, BB%) and Power stats (HR, ISO, SLG)
 
-```{r}
+
+```r
 library(pander)
-pander(cortable, style="rmarkdown")
+pander(cortable, style="rmarkdown", width=50, height=50)
 ```
+
+
+
+|  variable  |  cor   |
+|:----------:|:------:|
+|     G      | 0.2292 |
+|     PA     | 0.3411 |
+|     HR     | 0.7186 |
+|     R      | 0.4958 |
+|    RBI     | 0.6039 |
+|     SB     | 0.8228 |
+|   BBpct    | 0.7522 |
+|    Kpct    | 0.885  |
+|    ISO     | 0.7119 |
+|   BABIP    | 0.4389 |
+|    AVG     | 0.4661 |
+|    OBP     | 0.5442 |
+|    SLG     | 0.5697 |
+|    wOBA    | 0.534  |
+|  wRCplus   | 0.5261 |
+|    BsR     | 0.6444 |
+|    Off     | 0.4963 |
+|    Def     | 0.6389 |
+|    WAR     | 0.4045 |
 
 
 ---
@@ -83,9 +110,4 @@ pander(cortable, style="rmarkdown")
 
 We can look at the season pairs for WAR (Wins Above Replacement) to examine their correlation.  
 
-```{r, echo=FALSE}
-library(ggplot2)
-ggplot(data=filter(season.pairs, variable == "WAR"), aes(x, y) ) + 
-  geom_point(alpha=.4) + geom_smooth(method="lm") + 
-  labs(x="Year 1", y="Year 2", title="Year over Year Correlation") 
-```
+![plot of chunk unnamed-chunk-4](assets/fig/unnamed-chunk-4-1.png) 
