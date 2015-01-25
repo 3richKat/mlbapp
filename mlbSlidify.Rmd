@@ -73,15 +73,8 @@ names(cortable) <- c("variable", "cor")
 
 We can see that context specific statistics (R, RBI) and batted ball statistics (AVG, BABIP) are less predictive, year over year, than Plate Discipline stats (OBP, K%, BB%) and Power stats (HR, ISO, SLG)
 
-```{r, results='asis' , fig.height=3, fig.width=3}
-pandoc.table(cortable[1:10,], style="rmarkdown")
-```
-
----
-## Correlations Continued
-
-```{r, results='asis' , fig.height=3, fig.width=3, fig.fullwidth=F}
-pandoc.table(cortable[11:19,], style="rmarkdown")
+```{r}
+cortable
 ```
 
 ---
@@ -89,7 +82,7 @@ pandoc.table(cortable[11:19,], style="rmarkdown")
 
 We can look at the season pairs for WAR (Wins Above Replacement) to examine their correlation.  
 
-```{r, echo=FALSE}
+```{r}
 library(ggplot2)
 ggplot(data=filter(season.pairs, variable == "WAR"), aes(x, y) ) + 
   geom_point(alpha=.4) + geom_smooth(method="lm") + 
